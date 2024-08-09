@@ -14,8 +14,8 @@
 
 - Expo: Marco para construir aplicaciones React Native.
 - React Native: Framework para construir aplicaciones móviles multiplataforma.
-- Node.js: Backend para la API y la gestión de datos.
-- MongoDB: Base de datos utilizada para almacenar la información del usuario, transacciones y datos del transporte.
+- En debate(Kotlin/NestJS): Backend para la API y la gestión de datos.
+- En debate(MySQL/PostgreSQL): Base de datos utilizada para almacenar la información del usuario, transacciones y datos del transporte.
 
 ### 📦 Instalación
 
