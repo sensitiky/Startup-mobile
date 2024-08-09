@@ -1,8 +1,8 @@
-# 🚀 Virtual Wallet App
+# 🚀 Virtual Wallet/Bus Tracker App
 
 ## 📱 Descripción
 
-## Bienvenido a Virtual Wallet App, una solución integral para gestionar tus pagos y el transporte urbano.
+## Bienvenido a [Nombre en debate], una solución integral para gestionar tus pagos y el transporte urbano.
 
 - Esta aplicación te permite:
 
