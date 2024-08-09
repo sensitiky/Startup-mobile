@@ -157,3 +157,4 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+//Hay que agregar un router para poder navegar entre las pantallas
