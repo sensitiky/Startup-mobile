@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["rgba(197, 227, 211, 1)", "rgba(189, 231, 199, 1)"]}
+        colors={["rgb(49, 189, 54)", "rgba(189, 231, 199, 1)"]}
         style={styles.background}
       />
       <View style={styles.logoContainer}>

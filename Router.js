@@ -7,13 +7,15 @@ import ProfileScreen from './Profile';
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
           component={HomeScreen}
-          options={{ title: 'Bienvenido' }}
+          name="Home"
+          options={{headerShown:false,cardStyle:{backgroundColor:'transparent'}}}
+          
         />
         <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
