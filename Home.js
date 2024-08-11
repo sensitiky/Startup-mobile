@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -6,13 +6,49 @@ import {
   Pressable,
   Image,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import * as LocalAuthentication from "expo-local-authentication";
 
 const HomeScreen = ({ navigation }) => {
-  const [username, onChangeText] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleLogin = () => {
+    if (username === "admin" && password === "admin") {
+      navigation.navigate("Profile");
+    } else {
+      Alert.alert("Error", "Usuario o contraseña incorrectos.");
+    }
+  };
+
+  const authenticate = async () => {
+    const hasHardware = await LocalAuthentication.hasHardwareAsync();
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+    if (hasHardware && isEnrolled) {
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: "Inicia Sesión",
+      });
+
+      if (result.success) {
+        navigation.navigate("Profile");
+      } else {
+        Alert.alert("Error al iniciar sesión", "Por favor, intente de nuevo.");
+      }
+    } else {
+      Alert.alert(
+        "Autenticación no disponible",
+        "Por favor, configure su huella dactilar."
+      );
+    }
+  };
+
+  useEffect(() => {
+    authenticate();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -32,14 +68,14 @@ const HomeScreen = ({ navigation }) => {
       </Text>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeText}
+        onChangeText={setUsername}
         value={username}
         placeholder="Ingresa tu usuario o email"
         placeholderTextColor="#888"
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangePassword}
+        onChangeText={setPassword}
         value={password}
         placeholder="Ingresa tu contraseña"
         placeholderTextColor="#888"
@@ -48,22 +84,35 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.containerButtons}>
         <Pressable
           style={({ pressed }) => [
-            { backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black" },
             {
-              borderColor: pressed ? "rgba(0, 0, 0, 1)" : "black",
+              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
+              borderColor: "black",
               borderWidth: 1,
             },
             styles.button,
           ]}
-          onPress={() => navigation.navigate("Profile")}
+          onPress={handleLogin}
         >
           <Text style={styles.buttonText}>{"Iniciar Sesión"}</Text>
         </Pressable>
         <Pressable
           style={({ pressed }) => [
-            { backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black" },
             {
-              borderColor: pressed ? "rgba(0, 0, 0, 1)" : "black",
+              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
+              borderColor: "black",
+              borderWidth: 1,
+            },
+            styles.button,
+          ]}
+          onPress={authenticate}
+        >
+          <Text style={styles.buttonText}>{"Huella Dactilar"}</Text>
+        </Pressable>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
+              borderColor: "black",
               borderWidth: 1,
             },
             styles.button,
@@ -118,12 +167,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 70,
     fontFamily: "BebasNeue-Regular",
-    zIndex: 2,
   },
   logo: {
     width: 170,
     height: 170,
-    zIndex: 1,
     position: "absolute",
     top: "-122%",
     left: "33%",
@@ -132,8 +179,8 @@ const styles = StyleSheet.create({
     color: "rgba(22, 25, 24, 1)",
     fontSize: 18,
     fontFamily: "BebasNeue-Regular",
-    zIndex: 2,
     marginBottom: 20,
+    marginTop: 20,
     textAlign: "center",
     textDecorationLine: "underline",
   },

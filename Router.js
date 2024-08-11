@@ -14,7 +14,7 @@ const MyStack = () => {
         <Stack.Screen
           component={HomeScreen}
           name="Home"
-          options={{headerShown:false,cardStyle:{backgroundColor:'transparent'}}}
+          options={{headerShown:false, cardStyle:{backgroundColor:'transparent'}}}
           
         />
         <Stack.Screen name="Profile" component={ProfileScreen} />
