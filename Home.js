@@ -12,15 +12,42 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import * as LocalAuthentication from "expo-local-authentication";
 
+const API_URL = process.env.API_URL;
+
 const HomeScreen = ({ navigation }) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const handleLogin = () => {
-    if (username === "admin" && password === "admin") {
-      navigation.navigate("Profile");
-    } else {
-      Alert.alert("Error", "Usuario o contraseña incorrectos.");
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${API_URL}/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+
+      const textResponse = await response.text();
+      console.log("Response text:", textResponse);
+
+      try {
+        const jsonResponse = JSON.parse(textResponse);
+        if (response.ok) {
+          navigation.navigate("Profile");
+        } else {
+          Alert.alert("Login Failed", jsonResponse.message);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+        Alert.alert("Login Failed", "Unexpected response format.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      Alert.alert("Login Failed", "An error occurred during login.");
     }
   };
 
