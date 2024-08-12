@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   Alert,
+  Animated,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +18,7 @@ const API_URL = process.env.API_URL;
 const HomeScreen = ({ navigation }) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const handleLogin = async () => {
     try {
@@ -75,6 +77,11 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     authenticate();
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
   }, []);
 
   return (
@@ -83,13 +90,13 @@ const HomeScreen = ({ navigation }) => {
         colors={["rgb(49, 189, 54)", "rgba(189, 231, 199, 1)"]}
         style={styles.background}
       />
-      <View style={styles.logoContainer}>
+      <Animated.View style={[styles.logoContainer, { opacity: fadeAnim }]}>
         <Text style={styles.text}>BusFlow</Text>
         <Image
-          source={require("./assets/public/Logo.png")}
+          source={require("../assets/images/Logo.png")}
           style={styles.logo}
         />
-      </View>
+      </Animated.View>
       <Text style={styles.welcomeText}>
         ¡Bienvenido a tu gestor de pagos y transporte urbano!
       </Text>
@@ -110,41 +117,16 @@ const HomeScreen = ({ navigation }) => {
       />
       <View style={styles.containerButtons}>
         <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
-              borderColor: "black",
-              borderWidth: 1,
-            },
-            styles.button,
-          ]}
+          style={styles.button}
           onPress={handleLogin}
+          activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>{"Iniciar Sesión"}</Text>
         </Pressable>
         <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
-              borderColor: "black",
-              borderWidth: 1,
-            },
-            styles.button,
-          ]}
-          onPress={authenticate}
-        >
-          <Text style={styles.buttonText}>{"Huella Dactilar"}</Text>
-        </Pressable>
-        <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "rgba(172, 225, 175, 1)" : "black",
-              borderColor: "black",
-              borderWidth: 1,
-            },
-            styles.button,
-          ]}
+          style={styles.button}
           onPress={() => navigation.navigate("Profile")}
+          activeOpacity={0.7}
         >
           <Text style={styles.buttonText}>{"Registrarse"}</Text>
         </Pressable>
@@ -152,6 +134,15 @@ const HomeScreen = ({ navigation }) => {
       <View>
         <Text style={styles.welcomeText}>{"¿Olvidaste tu contraseña?"}</Text>
       </View>
+      <Pressable
+        style={styles.fingerprintButton}
+        onPress={authenticate}
+      >
+        <Image
+          source={require("../assets/images/fingerprint.png")}
+          style={styles.image}
+        />
+      </Pressable>
       <StatusBar style="auto" />
     </View>
   );
@@ -182,6 +173,11 @@ const styles = StyleSheet.create({
     width: "80%",
     textAlign: "center",
     backgroundColor: "#f0f0f0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   background: {
     position: "absolute",
@@ -215,6 +211,14 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 50,
+    backgroundColor: "black",
+    borderColor: "black",
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
     color: "white",
@@ -226,5 +230,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "80%",
+  },
+  fingerprintButton: {
+    marginTop: 20,
+    padding: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
   },
 });

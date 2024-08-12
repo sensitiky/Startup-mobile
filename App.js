@@ -1,8 +1,9 @@
 import React from "react";
-import useFonts from "./hooks/fonts";
-import MyStack from "./Router";
+import useFonts from "./app/src/hooks/fonts";
+import MyStack from "./app/src/routes/Router";
+import { registerRootComponent } from "expo";
 
-export default function App() {
+function App() {
   const fontsLoaded = useFonts();
 
   if (!fontsLoaded) {
@@ -11,3 +12,7 @@ export default function App() {
 
   return <MyStack />;
 }
+
+registerRootComponent(App);
+
+export default App;
