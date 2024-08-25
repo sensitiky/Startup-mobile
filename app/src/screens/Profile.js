@@ -6,17 +6,26 @@ import {
   RefreshControl,
   FlatList,
   Pressable,
+  Image,
 } from "react-native";
 import { Avatar } from "@rneui/themed";
+import DropdownComponent from "../components/Dropdown";
 
 const API_URL =
   "https://ui-avatars.com/api/?name=Jon+Snow&background=0D8ABC&color=fff&size=128";
 
 const transactions = [
-  { id: '1', description: 'Compra en tienda', amount: '-$20.00' },
-  { id: '2', description: 'Depósito', amount: '+$100.00' },
-  { id: '3', description: 'Pago de servicio', amount: '-$50.00' },
+  { id: "1", description: "Compra en tienda", amount: "-$20.00" },
+  { id: "2", description: "Depósito", amount: "+$100.00" },
+  { id: "3", description: "Pago de servicio", amount: "-$50.00" },
 ];
+const usuario = {
+  id: "1",
+  nombre: "Juan ",
+  apellido: "Perez",
+  edad: "25",
+  correo: "test@test.com",
+};
 
 const ProfileScreen = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -54,15 +63,29 @@ const ProfileScreen = () => {
         <Avatar
           size={100}
           rounded
-          source={avatar ? { uri: avatar } : require("../../src/assets/images/avatar.webp")}
+          source={
+            avatar
+              ? { uri: avatar }
+              : require("../../src/assets/images/avatar.webp")
+          }
           containerStyle={styles.avatar}
           onPress={fetchAvatar}
         />
       </View>
-      <Text style={styles.text}>Profile</Text>
-      <Text style={styles.text}>Welcome to the Profile Screen</Text>
+      <Text style={styles.text}>
+        Perfil {"\n"}
+        {usuario.nombre}
+        {usuario.apellido}
+      </Text>
+      <Text style={styles.text}>Bievenido a su inicio</Text>
+
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceText}>Monto: $500.00</Text>
+        <DropdownComponent />
+        <Text style={styles.balanceText}>Saldo: $500.00</Text>
+        <Image
+          style={styles.filter}
+          source={require("../../src/assets/public/filter.png")}
+        />
       </View>
       <Text style={styles.transactionsTitle}>Transacciones</Text>
     </View>
@@ -137,17 +160,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   balanceContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     padding: 20,
-    borderRadius: 10,
-    marginVertical: 10,
-    width: "80%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
+    borderRadius: 50,
+    flexDirection: "row",
   },
   balanceText: {
     fontSize: 24,
@@ -193,5 +209,10 @@ const styles = StyleSheet.create({
   navText: {
     fontSize: 16,
     color: "#000",
+  },
+  filter: {
+    width: 30,
+    height: 30,
+    margin: 5,
   },
 });

@@ -156,12 +156,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    width: "100%",
-    height: "100%",
+    width: "100vw",
+    height: "100vw",
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 20,
     position: "relative",
   },
   input: {
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "80%",
     textAlign: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
