@@ -6,11 +6,11 @@ import {
   RefreshControl,
   FlatList,
   Pressable,
-  Image,
 } from "react-native";
 import { Avatar } from "@rneui/themed";
 import DropdownComponent from "../components/Dropdown";
-
+import NavigationBottomBar from "../components/navigationbottom";
+import { useNavigation } from "@react-navigation/native";
 const API_URL =
   "https://ui-avatars.com/api/?name=Jon+Snow&background=0D8ABC&color=fff&size=128";
 
@@ -30,6 +30,7 @@ const usuario = {
 const ProfileScreen = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [avatar, setAvatar] = React.useState(null);
+  const navigation = useNavigation();
 
   const fetchAvatar = async () => {
     try {
@@ -52,6 +53,10 @@ const ProfileScreen = () => {
     setRefreshing(true);
     fetchAvatar().finally(() => setRefreshing(false));
   }, []);
+
+  const handleFund = () => {
+    navigation.navigate("Wallet");
+  };
 
   React.useEffect(() => {
     fetchAvatar();
@@ -81,11 +86,6 @@ const ProfileScreen = () => {
 
       <View style={styles.balanceContainer}>
         <DropdownComponent />
-        <Text style={styles.balanceText}>Saldo: $500.00</Text>
-        <Image
-          style={styles.filter}
-          source={require("../../src/assets/public/filter.png")}
-        />
       </View>
       <Text style={styles.transactionsTitle}>Transacciones</Text>
     </View>
@@ -110,22 +110,11 @@ const ProfileScreen = () => {
         }
         contentContainerStyle={styles.flatListContent}
       />
+      <Pressable style={styles.redirection} onPress={handleFund}>
+        <Text style={styles.redirectionText}>Depositar/Retirar Fondos</Text>
+      </Pressable>
       <View style={styles.navigationMenu}>
-        <Pressable style={styles.navItem}>
-          <Text style={styles.navText}>Inicio</Text>
-        </Pressable>
-        <Pressable style={styles.navItem}>
-          <Text style={styles.navText}>GPS</Text>
-        </Pressable>
-        <Pressable style={styles.navItem}>
-          <Text style={styles.navText}>QR</Text>
-        </Pressable>
-        <Pressable style={styles.navItem}>
-          <Text style={styles.navText}>Billetera</Text>
-        </Pressable>
-        <Pressable style={styles.navItem}>
-          <Text style={styles.navText}>Configuración</Text>
-        </Pressable>
+        <NavigationBottomBar />
       </View>
     </View>
   );
@@ -137,12 +126,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   flatListContent: {
-    paddingBottom: 100,
+    paddingBottom: 150,
   },
   headerContainer: {
     alignItems: "center",
+    flex: 1,
   },
   avatarContainer: {
     alignItems: "center",
@@ -163,12 +156,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     padding: 20,
     borderRadius: 50,
-    flexDirection: "row",
-  },
-  balanceText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
+    alignItems: "center",
+    alignContent: "center",
   },
   transactionsTitle: {
     fontSize: 20,
@@ -209,10 +198,25 @@ const styles = StyleSheet.create({
   navText: {
     fontSize: 16,
     color: "#000",
+    marginTop: 5,
   },
   filter: {
     width: 30,
     height: 30,
     margin: 5,
+  },
+  redirection: {
+    position: "absolute",
+    bottom: 80,
+    width: 200,
+    height: 50,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
+  },
+  redirectionText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

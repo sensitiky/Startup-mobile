@@ -1,13 +1,21 @@
 import React from "react";
-import { View, Pressable, StyleSheet, Image } from "react-native";
+import { View, Pressable, StyleSheet, Image, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const ImageUrl = [
-  { id: "1", url: require("../assets/images/home-svgrepo-com.png") },
-  { id: "2", url: require("../assets/images/gps-svgrepo-com.png") },
-  { id: "3", url: require("../assets/images/qr-code-svgrepo-com.png") },
-  { id: "4", url: require("../assets/images/wallet-svgrepo-com.png") },
-  { id: "5", url: require("../assets/images/settings-svgrepo-com.png") },
+  { id: "1", src: require("../assets/images/home.png"), description: "Inicio" },
+  { id: "2", src: require("../assets/images/gps.png"), description: "GPS" },
+  { id: "3", src: require("../assets/images/qr.png"), description: "QR" },
+  {
+    id: "4",
+    src: require("../assets/images/wallet.png"),
+    description: "Billetera",
+  },
+  {
+    id: "5",
+    src: require("../assets/images/settings.png"),
+    description: "Ajustes",
+  },
 ];
 
 const NavigationBottomBar = () => {
@@ -36,7 +44,8 @@ const NavigationBottomBar = () => {
           style={styles.navItem}
           onPress={() => handlePress(image.id)}
         >
-          <Image source={image.url} style={styles.navImage} />
+          <Image source={image.src} style={styles.navImage} />
+          <Text style={styles.navText}>{image.description}</Text>
         </Pressable>
       ))}
     </View>
@@ -59,12 +68,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navText: {
-    fontSize: 16,
+    fontSize: 12,
     color: "#000",
   },
   navImage: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });
 

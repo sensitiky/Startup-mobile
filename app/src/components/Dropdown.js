@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
+const transactions = [
+  { id: "1", description: "Compra en tienda", amount: "-$20.00" },
+  { id: "2", description: "Depósito", amount: "+$100.00" },
+  { id: "3", description: "Pago de servicio", amount: "-$50.00" },
 ];
+
+const data = transactions.map((transaction) => ({
+  label: transaction.description,
+  value: transaction.amount,
+}));
 
 const DropdownComponent = () => {
   const [value, setValue] = useState(null);
@@ -19,6 +19,7 @@ const DropdownComponent = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.balanceText}>Saldo: $500.00</Text>
       <Dropdown
         style={[styles.dropdown, isFocus && styles.dropdownFocus]}
         placeholderStyle={styles.placeholderStyle}
@@ -30,8 +31,8 @@ const DropdownComponent = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? "" : "..."}
-        searchPlaceholder="Search..."
+        placeholder={!isFocus ? "Seleccione su transacción" : "..."}
+        searchPlaceholder="Filtrar.."
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
@@ -39,12 +40,6 @@ const DropdownComponent = () => {
           setValue(item.value);
           setIsFocus(false);
         }}
-        renderLeftIcon={() => (
-          <Image
-            style={styles.filter}
-            source={require("../../src/assets/public/filter.png")}
-          />
-        )}
       />
     </View>
   );
@@ -55,10 +50,11 @@ export default DropdownComponent;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "transparent",
+    flexDirection: "col",
+    width: "100%",
   },
   dropdown: {
     height: 50,
-    width: "100%",
   },
   dropdownFocus: {
     width: "100%",
@@ -67,13 +63,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
-  },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
   },
   placeholderStyle: {
     fontSize: 16,
@@ -90,8 +79,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   filter: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     margin: 5,
+  },
+  balanceText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
   },
 });
